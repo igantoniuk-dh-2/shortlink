@@ -1,0 +1,23 @@
+services:
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    command: redis-server --requirepass somepassword
+    ports:
+      - '6380:6379'
+    volumes:
+      - ./data/redis/data:/data
+    environment:
+      - REDIS_REPLICATION_MODE=master
+  mongodb:
+    image: mongo:4.4
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=devuser
+      - MONGO_INITDB_ROOT_PASSWORD=devpass
+      - MONGO_INITDB_DATABASE=scopeDb
+    volumes:
+      - ./data/mongodb/data:/data/db
+      - ./data/mongodb/config:/data/configdb
+    ports:
+      - 27018:27017
