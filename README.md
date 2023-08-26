@@ -14,11 +14,19 @@
 
 ### Запуск
 
+#### как сервис
+
 ```sh
-npm i
-docker compose up
+npm install
 npm build
 npm start
+```
+
+#### docker compose
+
+```sh
+docker compose build
+docker compose up
 ```
 
 ### environment (см environment-sample)
