@@ -5,7 +5,9 @@ import {
   Get,
   Param,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { AppService } from './services/app.service';
 import {
@@ -13,15 +15,19 @@ import {
   DeleteShortLinkDto,
   ReadShortLinkDto,
 } from './app.dto';
-import { ApiParam } from '@nestjs/swagger';
-import { Response } from 'express';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import { Request, Response } from 'express';
+import { AuthGuard } from './guards/jwt.guard';
 
+@ApiBearerAuth()
 @Controller()
 export class AppController {
   constructor(readonly appService: AppService) {}
+
+  @UseGuards(AuthGuard)
   @Get('/all')
-  readAll() {
-    return this.appService.readAll();
+  readAll(@Req() req: Request) {
+    return this.appService.readAll(req['user']);
   }
   @Get('/:shortLink')
   @ApiParam({
@@ -33,16 +39,18 @@ export class AppController {
     return url;
   }
 
+  @UseGuards(AuthGuard)
   @Post('/')
-  create(@Body() dto: CreateShortLinkDto) {
-    return this.appService.create(dto);
+  create(@Body() dto: CreateShortLinkDto, @Req() req: Request) {
+    return this.appService.create(dto, req['user']);
   }
 
+  @UseGuards(AuthGuard)
   @Delete('/:id')
   @ApiParam({
     name: 'id',
   })
-  delete(@Param() dto: DeleteShortLinkDto) {
-    return this.appService.delete(dto);
+  delete(@Param() dto: DeleteShortLinkDto, @Req() req: Request) {
+    return this.appService.delete(dto, req['user']);
   }
 }

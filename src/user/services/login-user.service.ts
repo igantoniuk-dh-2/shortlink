@@ -16,7 +16,9 @@ export class LoginUserService extends CheckUserService {
 
     return {
       user: this.prepareUser(user),
-      jwt: await this.jwtService.signAsync(JSON.stringify(user)),
+      jwt: await this.jwtService.signAsync(
+        JSON.stringify({ ...user, ID: user._id }),
+      ),
     };
   }
 }

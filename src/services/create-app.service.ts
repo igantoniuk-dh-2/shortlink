@@ -5,10 +5,14 @@ import { ReadAppService } from './read-app.service';
 import mongoose from 'mongoose';
 
 import * as nanoid from 'nanoid';
+import { User } from 'src/user/user.schema';
 
 @Injectable()
 export class CreateAppService extends ReadAppService {
-  async create(dto: CreateShortLinkDto): Promise<CreateShortLinkResult> {
+  async create(
+    dto: CreateShortLinkDto,
+    user: Partial<User>,
+  ): Promise<CreateShortLinkResult> {
     const shortLink = nanoid.customAlphabet(
       'abcdefjhijklmnpqrstuvwxyz1234567890',
     )();
@@ -16,6 +20,7 @@ export class CreateAppService extends ReadAppService {
       ID: new mongoose.Types.ObjectId(),
       longLink: dto.url,
       shortLink,
+      userId: user.ID,
     });
 
     await link.save();

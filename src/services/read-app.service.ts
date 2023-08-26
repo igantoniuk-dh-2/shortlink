@@ -3,12 +3,13 @@ import { BaseAppService } from './base-app.service';
 import { ReadAllLinksResult, cacheTtl } from 'src/app.interface';
 import * as _ from 'lodash';
 import { ReadShortLinkDto } from 'src/app.dto';
+import { User } from 'src/user/user.schema';
 
 @Injectable()
 export class ReadAppService extends BaseAppService {
-  async readAll(): Promise<ReadAllLinksResult> {
+  async readAll(user: Partial<User>): Promise<ReadAllLinksResult> {
     // в редисе не ищем, чтобы не грузить его фулсканом
-    const links = await this.linksModel.find().exec();
+    const links = await this.linksModel.find({ userId: user.ID }).exec();
     return {
       links: links.map((link) => _.pick(link, 'shortLink', 'longLink', 'id')),
     } as ReadAllLinksResult;
@@ -23,7 +24,7 @@ export class ReadAppService extends BaseAppService {
       shortLink: dto.shortLink,
     });
 
-    if (!valFromCache) throw new HttpException('link not found', 404);
+    if (!valFromDB) throw new HttpException('link not found', 404);
 
     await this.redis.setexValue(dto.shortLink, valFromDB.longLink, cacheTtl);
     return valFromDB.longLink;

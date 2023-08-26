@@ -9,6 +9,7 @@ import {
 import { AppService } from './services/app.service';
 import { RedisProvider } from './redis/redis.provider';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 jest.mock('@nestjs/mongoose', () => {
   return {
     InjectModel: (some) => {
@@ -22,13 +23,15 @@ jest.mock('ioredis', () => {
     Redis: function () {},
   };
 });
+
+jest.mock('@nestjs/jwt');
 describe('AppService', () => {
   let appController: AppController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService, Model, RedisProvider, ConfigService],
+      providers: [AppService, Model, RedisProvider, ConfigService, JwtService],
     }).compile();
 
     appController = app.get<AppController>(AppController);
@@ -44,9 +47,9 @@ describe('AppService', () => {
         .spyOn(appController.appService, 'create')
         .mockReturnValue(new Promise((resolve) => resolve(createResult)));
 
-      expect(await appController.create({ url: 'afavaks;' })).toEqual(
-        createResult,
-      );
+      expect(
+        await appController.create({ url: 'afavaks;' }, {} as any),
+      ).toEqual(createResult);
     });
 
     it('should delete short link', async () => {
@@ -58,7 +61,7 @@ describe('AppService', () => {
         .spyOn(appController.appService, 'delete')
         .mockReturnValue(new Promise((resolve) => resolve(deleteResult)));
 
-      expect(await appController.delete({ id: 'affewk' })).toEqual(
+      expect(await appController.delete({ id: 'affewk' }, {} as any)).toEqual(
         deleteResult,
       );
     });
@@ -78,7 +81,7 @@ describe('AppService', () => {
         .spyOn(appController.appService, 'readAll')
         .mockReturnValue(new Promise((resolve) => resolve(readAllResut)));
 
-      expect(await appController.readAll()).toEqual(readAllResut);
+      expect(await appController.readAll({} as any)).toEqual(readAllResut);
     });
     it('should read short link', async () => {
       const result = 'awfawefka';
