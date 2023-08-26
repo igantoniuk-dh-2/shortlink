@@ -65,4 +65,11 @@ function createEnvPath() {
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(configService: ConfigService) {
+    console.log({
+      redis: configService.get('redis'),
+      mongo: configService.get('mongo'),
+    });
+  }
+}
