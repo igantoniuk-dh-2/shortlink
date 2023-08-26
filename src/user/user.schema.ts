@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
 export class User {
-  ID: string;
-  email: string;
-  password: string;
-  createdAt: string;
+  ID!: string;
+  email!: string;
+  password!: string;
+  createdAt!: string;
 }
 
 export const UserSchema = new mongoose.Schema({

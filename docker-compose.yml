@@ -1,12 +1,12 @@
 services:
-  app:
-    depends_on:
-      - redis
-      - mongodb
-    build: .
-    ports:
-      - '3000:3000'
-    restart: always
+  # app:
+  #   depends_on:
+  #     - redis
+  #     - mongodb
+  #   build: .
+  #   ports:
+  #     - '3000:3000'
+  #   restart: always
   redis:
     image: redis:6.2-alpine
     restart: always
