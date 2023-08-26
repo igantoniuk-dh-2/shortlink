@@ -80,5 +80,20 @@ describe('AppService', () => {
 
       expect(await appController.readAll()).toEqual(readAllResut);
     });
+    it('should read short link', async () => {
+      const result = 'awfawefka';
+
+      jest
+        .spyOn(appController.appService, 'read')
+        .mockReturnValue(new Promise((resolve) => resolve(result)));
+
+      expect(
+        await appController.redirect({ shortLink: 'dawd' }, {
+          redirect: () => {
+            //...
+          },
+        } as any),
+      ).toEqual(result);
+    });
   });
 });

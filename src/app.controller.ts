@@ -30,6 +30,7 @@ export class AppController {
   async redirect(@Param() dto: ReadShortLinkDto, @Res() res: Response) {
     const url = await this.appService.read(dto);
     res.redirect(url);
+    return url;
   }
 
   @Post('/')

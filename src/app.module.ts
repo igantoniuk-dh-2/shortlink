@@ -6,11 +6,12 @@ import { UserModule } from './user/user.module';
 
 import * as path from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import authConfig from './config/auth.config';
+import authConfig from './config/jwt.config';
 import redisConfig from './config/redis.config';
 import mongoConfig from './config/mongo.config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Link, LinksSchema } from './links.schema';
+import { JwtModule } from '@nestjs/jwt';
 
 function createEnvPath() {
   let envFilePath = path.resolve(__dirname, '../environment/');
@@ -50,6 +51,16 @@ function createEnvPath() {
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: Link.name, schema: LinksSchema }]),
+    JwtModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          secret: configService.get('jwt').secret,
+          global: true,
+        };
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
