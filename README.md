@@ -2,11 +2,18 @@
 
 ### Стек
 
+#### backend
+
 1. typescript: nestjs
 2. mongodb
 3. redis
 4. jwt
 5. swagger
+
+#### frontend
+
+1. reactjs
+2. tailwind
 
 ### REST API
 
@@ -14,15 +21,9 @@
 
 ### Запуск
 
-#### как сервис
-
-```sh
-npm install
-npm build
-npm start
-```
-
 #### docker compose
+
+#### настройка портов - через docker-compose.yml (при изменении порта backend, не забудь изменить порт в REACT_APP_BACKEND_PORT в docker-compose.yml)
 
 ```sh
 docker compose build

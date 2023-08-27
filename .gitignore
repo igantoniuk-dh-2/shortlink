@@ -3,6 +3,9 @@
 /node_modules
 /data
 /environment
+/backend/node_modules
+/backend/dist
+/backend/environment
 
 # Logs
 logs

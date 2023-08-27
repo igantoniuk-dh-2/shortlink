@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 export class User {
   ID!: string;
+  id?: string;
   email!: string;
   password!: string;
   createdAt!: string;

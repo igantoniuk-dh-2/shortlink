@@ -11,7 +11,9 @@ export class ReadAppService extends BaseAppService {
     // в редисе не ищем, чтобы не грузить его фулсканом
     const links = await this.linksModel.find({ userId: user.ID }).exec();
     return {
-      links: links.map((link) => _.pick(link, 'shortLink', 'longLink', 'id')),
+      links: links.map((link) =>
+        _.pick(link, 'shortLink', 'longLink', 'id', 'createdAt', 'userId'),
+      ),
     } as ReadAllLinksResult;
   }
 

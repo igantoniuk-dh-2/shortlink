@@ -21,6 +21,7 @@ export class CreateAppService extends ReadAppService {
       longLink: dto.url,
       shortLink,
       userId: user.ID,
+      createdAt: new Date().toISOString(),
     });
 
     await link.save();

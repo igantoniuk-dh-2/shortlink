@@ -12,6 +12,9 @@ export interface ReadAllLinksResult {
     shortLink: string;
     longLink: string;
     id: string;
+    ID: string;
+    createdAt: string;
+    userId: string;
   }[];
 }
 

@@ -9,14 +9,13 @@ export class CreateUserService extends BaseUserService {
     const { email, password } = dto;
 
     const findUser = await this.userModel.findOne({ email });
-    if (findUser) throw new HttpException('user already exists', 400);
+    if (findUser)
+      throw new HttpException({ message: ['user already exists'] }, 400);
 
     const user = await this.userModel.create({
       email,
       password: this.crypt(password),
     });
-
-    if (!user) throw new HttpException('wrong credentials', 401);
 
     user.password = undefined;
     return {
